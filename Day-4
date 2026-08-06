@@ -1,0 +1,288 @@
+# Linux Class 4 – Advanced Linux Engineering Concepts
+
+## Overview
+
+This class covers advanced Linux engineering concepts required for real-world DevOps environments, focusing on:
+
+- Process Management
+- System Health Monitoring
+- Network Troubleshooting
+- Shell Scripting
+- Cron Jobs
+- Storage Management
+- Linux Run Levels
+
+---
+
+# 1. Process Management and System Health
+
+## Process Monitoring
+
+Useful commands:
+
+```bash
+ps
+ps -A
+ps aux
+top
+uptime
+```
+
+### Purpose
+
+- View running processes
+- Monitor CPU and Memory usage
+- Check Load Average
+- Identify Process IDs (PID)
+
+### Process Management
+
+```bash
+kill <PID>
+kill -9 <PID>
+pkill <process_name>
+pgrep <process_name>
+```
+
+---
+
+# 2. Advanced Grep
+
+### Case-insensitive Search
+
+```bash
+grep -i "error" file.log
+```
+
+### Inverted Search
+
+```bash
+grep -v "running" pods.txt
+```
+
+### Multiple Pattern Search
+
+```bash
+grep -E "error|failed" app.log
+```
+
+### Recursive Search
+
+```bash
+grep -r "password" /etc
+```
+
+### Whole Word Search
+
+```bash
+grep -w "root" /etc/passwd
+```
+
+### Count Matching Lines
+
+```bash
+grep "ERROR" app.log | wc -l
+```
+
+---
+
+# 3. Network Diagnostics
+
+## View IP Address
+
+```bash
+ifconfig
+```
+
+or
+
+```bash
+ip addr
+```
+
+## Ping
+
+```bash
+ping google.com
+```
+
+Uses **ICMP** protocol.
+
+---
+
+## Telnet
+
+```bash
+telnet server-ip 22
+```
+
+Used to verify whether a TCP port is reachable.
+
+---
+
+## Netcat
+
+```bash
+nc -zv server-ip 22
+```
+
+Alternative to Telnet.
+
+---
+
+## Wget
+
+```bash
+wget https://example.com/file.zip
+```
+
+Downloads files.
+
+---
+
+## Curl
+
+```bash
+curl https://example.com
+```
+
+Used for API testing and HTTP requests.
+
+---
+
+# 4. Shell Scripting
+
+## Shebang
+
+```bash
+#!/bin/bash
+```
+
+Specifies the shell interpreter.
+
+---
+
+## Special Variables
+
+| Variable | Description |
+|----------|-------------|
+| `$?` | Exit status of previous command |
+| `$$` | Current Shell PID |
+| `$!` | Last Background Process PID |
+| `$0` | Current Script Name |
+
+Example:
+
+```bash
+ls
+
+echo $?
+```
+
+---
+
+# 5. Linux Run Levels
+
+| Run Level | Description |
+|-----------|-------------|
+| 0 | Shutdown |
+| 1 | Single User Mode |
+| 2 | Multi-user Mode |
+| 3 | Multi-user CLI |
+| 4 | Custom |
+| 5 | GUI Mode |
+| 6 | Reboot |
+
+---
+
+# 6. Cron Jobs
+
+## Edit Cron
+
+```bash
+crontab -e
+```
+
+## List Cron Jobs
+
+```bash
+crontab -l
+```
+
+## Remove Cron Jobs
+
+```bash
+crontab -r
+```
+
+### Cron Format
+
+```
+* * * * *
+- - - - -
+| | | | |
+| | | | +---- Day of Week
+| | | +------ Month
+| | +-------- Day of Month
+| +---------- Hour
++------------ Minute
+```
+
+Example:
+
+```bash
+0 2 * * * /home/ubuntu/backup.sh
+```
+
+Runs daily at **2:00 AM**.
+
+---
+
+# 7. Storage Management
+
+## Mount all filesystems
+
+```bash
+mount -a
+```
+
+## Persistent Mount Configuration
+
+```
+/etc/fstab
+```
+
+---
+
+# 8. Log Files
+
+System logs are stored under:
+
+```bash
+/var/log
+```
+
+Examples:
+
+```
+/var/log/messages
+/var/log/syslog
+/var/log/nginx/
+/var/log/apache2/
+/var/log/datadog/
+```
+
+---
+
+# Key Takeaways
+
+- Monitor system health using `top` and `uptime`
+- Manage processes with `kill`, `pkill`, and `pgrep`
+- Filter logs efficiently using `grep`
+- Troubleshoot networks with `ping`, `telnet`, `nc`, `curl`, and `wget`
+- Write reliable shell scripts using special variables
+- Automate recurring tasks using Cron Jobs
+- Configure persistent mounts using `/etc/fstab`
+- Analyze logs under `/var/log`
+
+
