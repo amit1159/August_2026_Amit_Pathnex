@@ -1,18 +1,4 @@
 # Linux Fundamentals and DevOps Career Briefing
-
----
-
-# Learning Objectives
-
-After completing this session, you should be able to:
-
-- Navigate the Linux file system using the CLI
-- Manage files and directories
-- Understand Linux permissions and ownership
-- Work with hard and soft links
-- Connect to AWS EC2 instances using SSH
-- Develop a strong DevOps learning mindset
-
 ---
 
 # 1. Linux Navigation
@@ -295,29 +281,6 @@ Esc
 :q!
 ```
 
----
-
-# 7. DevOps Career Guidance
-
-Key learning points from the session:
-
-- Master Linux before learning advanced DevOps tools.
-- Practice commands daily instead of only watching tutorials.
-- Focus on interview preparation and practical troubleshooting.
-- Learn to communicate and explain technical concepts clearly.
-- Build projects and gain hands-on experience using AWS.
-
----
-
-# Best Practices
-
-- Practice Linux commands every day.
-- Use AWS EC2 or a Virtual Machine for hands-on learning.
-- Follow the Principle of Least Privilege when assigning permissions.
-- Never use `chmod 777` in production unless absolutely necessary.
-- Stop or terminate unused cloud resources to avoid unnecessary costs.
-
----
 
 # Key Commands Summary
 
@@ -331,11 +294,5 @@ Key learning points from the session:
 | System Information | `whoami`, `date`, `df -h` |
 | Links | `ln`, `ln -s` |
 | AWS | `ssh` |
-
----
-
-# Conclusion
-
-Linux is the foundation of modern DevOps. A strong understanding of Linux commands, permissions, file management, and cloud-based Linux administration is essential for working with technologies such as Docker, Kubernetes, Jenkins, Ansible, Terraform, and cloud platforms like AWS, Azure, and GCP. Consistent hands-on practice and a problem-solving mindset are key to becoming a successful DevOps engineer.
 
 ---
