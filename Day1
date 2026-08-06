@@ -1,0 +1,298 @@
+## Linux Fundamentals and DevOps Career Briefing
+---
+
+# 1. Linux Navigation
+
+## Print Current Directory
+
+```bash
+pwd
+```
+
+Displays the current working directory.
+
+---
+
+## Change Directory
+
+```bash
+cd folder_name
+```
+
+Move into a directory.
+
+```bash
+cd ..
+```
+
+Move one level back.
+
+```bash
+cd ../..
+```
+
+Move two levels back.
+
+---
+
+## List Directory Contents
+
+```bash
+ls
+```
+
+```bash
+ls -l
+```
+
+Long listing.
+
+```bash
+ls -la
+```
+
+Shows hidden files.
+
+```bash
+ls -lh
+```
+
+Human-readable file sizes.
+
+---
+
+# 2. File and Directory Management
+
+## Create Directory
+
+```bash
+mkdir project
+```
+
+---
+
+## Create File
+
+```bash
+touch file.txt
+```
+
+---
+
+## Copy File
+
+```bash
+cp file1.txt file2.txt
+```
+
+---
+
+## Move or Rename
+
+```bash
+mv old.txt new.txt
+```
+
+---
+
+## Delete File
+
+```bash
+rm file.txt
+```
+
+Delete Directory
+
+```bash
+rm -r folder
+```
+
+> **Warning:** Files deleted from the Linux CLI are generally not sent to a Recycle Bin.
+
+---
+
+# 3. Linux Permissions
+
+Linux permissions are assigned to:
+
+- Owner (User)
+- Group
+- Others
+
+## Permission Values
+
+| Permission | Symbol | Value |
+|------------|--------|------:|
+| Read | r | 4 |
+| Write | w | 2 |
+| Execute | x | 1 |
+
+---
+
+## Common Permission Examples
+
+| Permission | Meaning |
+|------------|---------|
+| 777 | Full access to everyone |
+| 755 | Owner has full access; others can read and execute |
+| 644 | Owner can read/write; others can only read |
+| 600 | Only owner can read/write |
+
+---
+
+## Change Permissions
+
+```bash
+chmod 755 script.sh
+```
+
+---
+
+## Change Owner
+
+```bash
+chown ubuntu:ubuntu file.txt
+```
+
+---
+
+# 4. Hard Link vs Soft Link
+
+## Hard Link
+
+```bash
+ln source.txt hardlink.txt
+```
+
+### Features
+
+- Points directly to file data.
+- Continues to work even if the original filename is deleted.
+- Shares the same inode.
+
+---
+
+## Soft Link (Symbolic Link)
+
+```bash
+ln -s source.txt softlink.txt
+```
+
+### Features
+
+- Works like a shortcut.
+- Depends on the original file path.
+- Becomes broken if the original file is removed.
+
+---
+
+# 5. AWS EC2 Linux Practice
+
+## Connect to EC2
+
+```bash
+ssh -i key.pem ec2-user@<public-ip>
+```
+
+Requirements:
+
+- EC2 instance running
+- SSH key available
+- Security Group allows Port **22**
+- Public IP or Bastion Host
+
+---
+
+# 6. Useful Linux Commands
+
+## Current User
+
+```bash
+whoami
+```
+
+---
+
+## Current Date
+
+```bash
+date
+```
+
+---
+
+## Disk Usage
+
+```bash
+df -h
+```
+
+---
+
+## View File
+
+```bash
+cat file.txt
+```
+
+---
+
+## First 10 Lines
+
+```bash
+head file.txt
+```
+
+---
+
+## Last 10 Lines
+
+```bash
+tail file.txt
+```
+
+---
+
+## Edit File
+
+```bash
+vim file.txt
+```
+
+### Vim Shortcuts
+
+Insert Mode
+
+```
+i
+```
+
+Save and Exit
+
+```
+Esc
+:wq
+```
+
+Quit Without Saving
+
+```
+Esc
+:q!
+```
+
+
+# Key Commands Summary
+
+| Category | Commands |
+|----------|----------|
+| Navigation | `pwd`, `cd`, `ls` |
+| File Management | `mkdir`, `touch`, `cp`, `mv`, `rm` |
+| Permissions | `chmod`, `chown` |
+| Viewing Files | `cat`, `head`, `tail` |
+| Editing | `vim` |
+| System Information | `whoami`, `date`, `df -h` |
+| Links | `ln`, `ln -s` |
+| AWS | `ssh` |
+
+---
