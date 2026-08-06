@@ -1,0 +1,389 @@
+ Linux for DevOps: Training Methodology and Technical Foundations
+
+# Learning Objectives
+
+After completing this session, you should be able to:
+
+- Understand Linux fundamentals
+- Navigate the Linux file system efficiently
+- Manage files and directories
+- Launch and connect to AWS EC2 instances
+- Perform basic Linux troubleshooting
+- Monitor CPU, Memory, Disk, and I/O
+- Develop the mindset required for a successful DevOps career
+
+---
+
+. Directory Navigation
+
+## Print Working Directory
+
+```bash
+pwd
+```
+
+Displays the current directory.
+
+---
+
+## List Files
+
+```bash
+ls
+```
+
+Detailed List
+
+```bash
+ls -l
+```
+
+Show Hidden Files
+
+```bash
+ls -la
+```
+
+Human Readable Sizes
+
+```bash
+ls -lh
+```
+
+---
+
+## Change Directory
+
+```bash
+cd folder_name
+```
+
+Move Back
+
+```bash
+cd ..
+```
+
+Move Back Two Levels
+
+```bash
+cd ../..
+```
+
+---
+
+# 4. Directory Management
+
+Create Directory
+
+```bash
+mkdir project
+```
+
+Create Multiple Directories
+
+```bash
+mkdir dev qa prod
+```
+
+Create Parent Directories
+
+```bash
+mkdir -p app/backend/api
+```
+
+---
+
+# 5. Absolute vs Relative Path
+
+## Absolute Path
+
+Starts from the root directory.
+
+Example
+
+```text
+/home/amit/project
+```
+
+Always remains the same.
+
+---
+
+## Relative Path
+
+Depends on the current working directory.
+
+Example
+
+```text
+../project
+```
+
+---
+
+# 6. AWS EC2 Practice
+
+Recommended OS
+
+- Amazon Linux
+
+Benefits
+
+- Native AWS support
+- Optimized performance
+- Easy package management
+- Better AWS integration
+
+---
+
+## Connect to EC2
+
+```bash
+ssh -i key.pem ec2-user@<public-ip>
+```
+
+Requirements
+
+- Running EC2 Instance
+- Key Pair
+- Port 22 Open
+- Public IP
+
+---
+
+## Security Groups
+
+Allow
+
+```
+SSH (22)
+```
+
+from
+
+```
+Your Public IP
+```
+
+---
+
+# 7. Disk Management
+
+## Disk Usage
+
+```bash
+df -h
+```
+
+Displays
+
+- Total Disk
+- Used Space
+- Free Space
+
+---
+
+## Directory Usage
+
+```bash
+du -h
+```
+
+Displays directory sizes.
+
+---
+
+## Find Large Files
+
+```bash
+find . -size +100M
+```
+
+---
+
+# 8. I-Node Concept
+
+Every file has an inode.
+
+Sometimes
+
+```
+Disk Space Available
+
+BUT
+
+Cannot Create New Files
+```
+
+Reason
+
+- I-node limit reached.
+
+Check
+
+```bash
+df -i
+```
+
+---
+
+# 9. CPU and Memory Monitoring
+
+## Top Command
+
+```bash
+top
+```
+
+Displays
+
+- CPU Usage
+- Memory Usage
+- Running Processes
+- Load Average
+
+---
+
+## RAM Usage
+
+```bash
+free -h
+```
+
+---
+
+## Load Average
+
+Shows system load over
+
+- 1 Minute
+- 5 Minutes
+- 15 Minutes
+
+Example
+
+```
+load average:
+0.40
+1.20
+2.50
+```
+
+Interpretation depends on the number of CPU cores.
+
+---
+
+# 10. File Inspection
+
+View Entire File
+
+```bash
+cat file.txt
+```
+
+First 10 Lines
+
+```bash
+head file.txt
+```
+
+Last 10 Lines
+
+```bash
+tail file.txt
+```
+
+Last 5 Lines
+
+```bash
+tail -5 file.txt
+```
+
+---
+
+# 11. Find Command
+
+Search File
+
+```bash
+find . -name "*.log"
+```
+
+Case Insensitive
+
+```bash
+find . -iname "*.LOG"
+```
+
+---
+
+# 12. Pipe Operator
+
+```bash
+|
+```
+
+Passes output of one command to another.
+
+Example
+
+```bash
+ps -ef | grep nginx
+```
+
+---
+
+# 13. Service Management
+
+Start Service
+
+```bash
+systemctl start nginx
+```
+
+Enable Service
+
+```bash
+systemctl enable nginx
+```
+
+Check Status
+
+```bash
+systemctl status nginx
+```
+
+---
+
+# 14. Package Installation
+
+Amazon Linux
+
+```bash
+yum install nginx
+```
+
+Ubuntu
+
+```bash
+apt install nginx
+```
+
+---
+
+# Key Commands Summary
+
+| Category | Commands |
+|----------|----------|
+| Navigation | `pwd`, `cd`, `ls` |
+| Directory | `mkdir`, `mkdir -p` |
+| Disk | `df -h`, `du -h`, `df -i` |
+| Memory | `free -h` |
+| CPU | `top`, `uptime` |
+| Search | `find`, `grep` |
+| Logs | `head`, `tail`, `cat` |
+| Services | `systemctl` |
+| AWS | `ssh` |
+| Packages | `yum`, `apt` |
+
