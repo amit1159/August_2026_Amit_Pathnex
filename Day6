@@ -1,0 +1,96 @@
+# AWS 2026 - Learning Summary
+---
+
+## Topics Covered
+
+### ☁️ Cloud Computing Fundamentals
+- Cloud vs On-Premise Infrastructure
+- Benefits of Cloud Computing
+- Shared Responsibility Model
+- Scalability and Elasticity
+
+### Cloud Service Models
+- Infrastructure as a Service (IaaS)
+- Platform as a Service (PaaS)
+- Software as a Service (SaaS)
+
+---
+
+## Amazon EC2
+
+- EC2 Instance Types
+- vCPU, Memory and Storage Sizing
+- Amazon Machine Image (AMI)
+- Golden Images
+- EC2 Pricing Models
+  - On-Demand
+  - Reserved Instances
+  - Spot Instances
+- Cost Optimization Strategies
+
+---
+
+## AWS Identity and Access Management (IAM)
+
+- IAM Users
+- IAM Groups
+- IAM Roles
+- IAM Policies (JSON)
+- ARN (Amazon Resource Name)
+- Principle of Least Privilege
+- Multi-Factor Authentication (MFA)
+
+---
+
+## Amazon VPC
+
+- Virtual Private Cloud (VPC)
+- Public and Private Subnets
+- Internet Gateway (IGW)
+- NAT Gateway
+- Route Tables
+- Security Groups
+- Network ACLs
+- VPC Peering
+- Transit Gateway
+
+---
+
+## Amazon S3
+
+- Object Storage
+- Buckets
+- Bucket Naming Standards
+- Storage Classes
+  - Standard
+  - Intelligent-Tiering
+  - Glacier
+  - Deep Archive
+- Data Durability and Availability
+
+---
+
+## AWS Best Practices
+
+- Least Privilege Access
+- Secure IAM Design
+- Cost Optimization
+- High Availability
+- Fault Tolerance
+- Resource Tagging
+- Standardized AMIs (Golden Images)
+
+
+---
+
+## Technologies Covered
+
+- Amazon EC2
+- Amazon VPC
+- Amazon S3
+- IAM
+- AWS Networking
+- Cloud Security
+- Cloud Architecture
+- Cost Optimization
+
