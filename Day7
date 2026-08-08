@@ -1,0 +1,69 @@
+# AWS Fundamentals - Day 2
+
+## Overview
+In this session, I learned the core AWS services used to build secure, scalable, and highly available cloud environments. The focus was on multi-account governance, monitoring, networking, automation, and serverless computing.
+
+## Topics Covered
+
+### 1. Landing Zone
+- Secure and standardized multi-account AWS environment.
+- Built using AWS Organizations.
+- Provides a strong foundation for enterprise cloud adoption.
+
+### 2. AWS Control Tower
+- Automates Landing Zone deployment.
+- Applies security guardrails.
+- Centralized governance for multiple AWS accounts.
+
+### 3. Account Factory
+- Automates AWS account provisioning.
+- Ensures consistent account configuration across teams.
+
+### 4. Service Control Policies (SCP)
+- Defines the maximum permissions for AWS accounts.
+- Enforces organization-wide security policies.
+
+### 5. Amazon S3
+- Object storage service.
+- Supports Versioning, Lifecycle Policies, Encryption, and Static Website Hosting.
+
+### 6. AWS Systems Manager Session Manager
+- Secure access to EC2 instances without SSH keys.
+- Eliminates the need for Bastion Hosts.
+- Uses IAM for authentication and auditing.
+
+### 7. Amazon Route 53
+- Highly available DNS service.
+- Supports Public & Private Hosted Zones.
+- Multiple routing policies including Simple, Weighted, Latency, Failover, and Geolocation.
+
+### 8. AWS CloudTrail
+- Records AWS API activities.
+- Used for auditing, compliance, and security investigations.
+
+### 9. Amazon CloudWatch
+- Monitors AWS resources and applications.
+- Collects Metrics, Logs, and Events.
+- Supports Dashboards and Alarms.
+
+### 10. AWS Auto Scaling
+- Automatically scales EC2 instances.
+- Uses Minimum, Maximum, and Desired Capacity.
+- Improves availability while reducing costs.
+
+### 11. AWS Lambda
+- Serverless compute service.
+- Executes code based on events.
+- Supports event-driven automation without managing servers.
+
+
+## Real-World DevOps Use Cases
+- Secure enterprise AWS account management.
+- Centralized monitoring and alerting.
+- Infrastructure automation and serverless workflows.
+- High availability using Auto Scaling.
+- Security auditing and compliance monitoring.
+- Reliable DNS routing and disaster recovery.
+
+## Conclusion
+This session provided a solid understanding of AWS governance, monitoring, networking, automation, and serverless services. These services form the foundation of building secure, scalable, and production-ready cloud infrastructure.
