@@ -1,0 +1,406 @@
+# Git & GitHub for DevOps – Class Notes
+
+## Overview
+
+This document summarizes the core Git and GitHub concepts covered during the training session. It focuses on the Git workflow, branching strategy, collaboration, merge conflict resolution, and GitHub best practices used in real-world DevOps environments.
+
+---
+
+# Learning Objectives
+
+# 1. Git Workflow
+
+The standard Git workflow followed in most organizations is:
+
+```text
+Clone Repository
+       ↓
+Create Feature Branch
+       ↓
+Make Changes
+       ↓
+Git Add
+       ↓
+Git Commit
+       ↓
+Git Push
+       ↓
+Create Pull Request
+       ↓
+Code Review
+       ↓
+Merge to Main
+       ↓
+Delete Feature Branch
+```
+
+---
+
+# 2. Essential Git Commands
+
+## Initialize Repository
+
+```bash
+git init
+```
+
+Initializes a new Git repository by creating the hidden `.git` directory.
+
+---
+
+## Check Repository Status
+
+```bash
+git status
+```
+
+Shows:
+
+- Modified files
+- Staged files
+- Untracked files
+- Current branch
+
+---
+
+## Stage Files
+
+Stage a single file:
+
+```bash
+git add filename
+```
+
+Stage all files:
+
+```bash
+git add .
+```
+
+Moves changes to the staging area.
+
+---
+
+## Commit Changes
+
+```bash
+git commit -m "Initial commit"
+```
+
+Creates a snapshot of the staged files.
+
+---
+
+## Push Changes
+
+```bash
+git push origin main
+```
+
+Uploads commits to the remote GitHub repository.
+
+---
+
+## Pull Latest Changes
+
+```bash
+git pull origin main
+```
+
+Downloads and merges the latest changes from the remote repository.
+
+---
+
+## Clone Repository
+
+```bash
+git clone https://github.com/user/repository.git
+```
+
+Downloads an existing repository to your local machine.
+
+---
+
+# 3. Staging Area
+
+Git tracks only files added using:
+
+```bash
+git add
+```
+
+Workflow:
+
+```text
+Working Directory
+        │
+        ▼
+ Staging Area
+        │
+        ▼
+     Commit
+        │
+        ▼
+    Git History
+```
+
+---
+
+# 4. The .git Directory
+
+Every Git repository contains a hidden directory:
+
+```text
+.git
+```
+
+It stores:
+
+- Commit history
+- Branches
+- Repository metadata
+- Configuration
+- Object database
+
+If `.git` is deleted, the folder is no longer a Git repository.
+
+---
+
+# 5. Branching
+
+Create and switch to a new branch:
+
+```bash
+git checkout -b feature/login
+```
+
+List branches:
+
+```bash
+git branch
+```
+
+Switch branches:
+
+```bash
+git checkout main
+```
+
+Delete a branch:
+
+```bash
+git branch -d feature/login
+```
+
+---
+
+# 6. Pull Request (PR)
+
+A Pull Request allows developers to request that their changes be merged into another branch.
+
+Typical workflow:
+
+```text
+Developer
+      │
+      ▼
+Feature Branch
+      │
+      ▼
+Commit
+      │
+      ▼
+Push
+      │
+      ▼
+Create Pull Request
+      │
+      ▼
+Code Review
+      │
+      ▼
+Approval
+      │
+      ▼
+Merge
+```
+
+Benefits:
+
+- Code Review
+- Collaboration
+- Quality Assurance
+- CI/CD Validation
+
+---
+
+# 7. Merge Conflict
+
+A merge conflict occurs when two developers modify the same part of a file.
+
+Example:
+
+Developer A
+
+```text
+Hello World
+```
+
+Developer B
+
+```text
+Hello DevOps
+```
+
+Git cannot automatically decide which version to keep.
+
+Common resolution options:
+
+- Accept Current Change
+- Accept Incoming Change
+- Accept Both Changes
+
+---
+
+## Best Practice
+
+Always pull the latest changes before creating a new branch.
+
+```bash
+git pull origin main
+```
+
+---
+
+# 8. SSH Authentication
+
+Generate an SSH key:
+
+```bash
+ssh-keygen
+```
+
+Public Key:
+
+```text
+~/.ssh/id_rsa.pub
+```
+
+Private Key:
+
+```text
+~/.ssh/id_rsa
+```
+
+Add the public key to GitHub:
+
+```
+GitHub
+→ Settings
+→ SSH and GPG Keys
+→ New SSH Key
+```
+
+Benefits:
+
+- Password-less authentication
+- Secure communication
+- Industry standard
+
+---
+
+# 9. Clone vs Fork
+
+## Clone
+
+Creates a local copy of a repository.
+
+```bash
+git clone https://github.com/user/repo.git
+```
+
+Use when you already have access to the repository.
+
+---
+
+## Fork
+
+Creates your own copy of someone else's repository on GitHub.
+
+Workflow:
+
+```text
+Original Repository
+        │
+        ▼
+       Fork
+        │
+        ▼
+ Your GitHub Account
+        │
+        ▼
+ Clone Locally
+        │
+        ▼
+ Make Changes
+        │
+        ▼
+ Pull Request
+```
+
+Use when you do **not** have write access to the original repository.
+
+---
+
+# 10. Commit Message Best Practices
+
+Good commit messages are short and meaningful.
+
+Examples:
+
+```text
+OPS-1234: Updated Security Group rules
+
+DEV-205: Fixed login authentication
+
+BUG-110: Resolved API timeout issue
+
+DOC-15: Added Git Class Notes
+```
+
+Avoid:
+
+```text
+update
+
+test
+
+changes
+
+abc
+```
+
+---
+
+# 11. Git Best Practices
+
+- Pull the latest changes before starting work.
+- Create a separate feature branch for each task.
+- Write meaningful commit messages.
+- Never commit secrets or passwords.
+- Review code before merging.
+- Delete merged branches.
+- Keep the `main` branch stable.
+
+---
+
+# Key Commands Summary
+
+| Category | Commands |
+|----------|----------|
+| Repository | `git init`, `git clone`, `git status` |
+| Staging | `git add`, `git commit` |
+| Remote | `git push`, `git pull` |
+| Branch | `git branch`, `git checkout`, `git checkout -b` |
+| Merge | `git merge` |
+| SSH | `ssh-keygen` |
