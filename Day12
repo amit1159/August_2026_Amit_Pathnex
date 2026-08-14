@@ -1,0 +1,170 @@
+# Amazon EKS — Short Notes
+
+## 1. Authentication vs Authorization
+
+* **Authentication** → *Who are you?* → Identity verify karta hai.
+* **Authorization** → *What can you do?* → Permissions check karta hai.
+* EKS mein **IAM + Kubernetes RBAC** commonly use hote hain.
+
+---
+
+## 2. EKS Version & Upgrade
+
+EKS Kubernetes versions ka support lifecycle hota hai:
+
+```text
+Standard Support → Extended Support → Upgrade
+```
+
+* Extended Support standard se significantly expensive hota hai.
+* Version upgrade ko support-end tak delay nahi karna chahiye.
+* Upgrade strategy:
+
+```text
+Dev → QA → UAT/Staging → Low Traffic Prod → High Traffic Prod
+```
+
+Upgrade se pehle check:
+
+* Kubernetes API compatibility
+* Add-ons
+* CNI/CSI
+* Ingress
+* Helm charts
+* Application compatibility
+
+---
+
+## 3. Scaling
+
+### Horizontal Scaling
+
+**Scale Out / Scale In**
+
+```text
+3 Pods → 6 Pods
+```
+
+Common tool: **HPA**
+
+### Vertical Scaling
+
+**Scale Up / Scale Down**
+
+```text
+500m CPU → 1 CPU
+512Mi → 1Gi RAM
+```
+
+Common tool: **VPA**
+
+> Horizontal = More Pods
+> Vertical = Bigger Pods
+
+---
+
+## 4. EKS Node Groups
+
+Different workloads ke liye different node groups:
+
+* **General Purpose** → Normal applications
+* **Compute Optimized** → CPU-intensive workloads
+* **Memory Optimized** → RAM-intensive workloads
+* **Spot** → Cost saving, fault-tolerant workloads
+
+Example:
+
+```text
+EKS
+ ├── General Nodes
+ ├── Compute Nodes
+ └── Spot Nodes
+```
+
+---
+
+## 5. DaemonSet
+
+DaemonSet selected/every eligible node par ek Pod run karta hai.
+
+Common use cases:
+
+* Log collectors
+* Monitoring agents
+* `kube-proxy`
+* `aws-node` / networking components
+
+```text
+2 Nodes → 2 Pods
+4 Nodes → 4 Pods
+```
+
+New eligible node add hone par DaemonSet automatically Pod create karta hai.
+
+---
+
+## 6. EKS Cost Optimization
+
+Important areas:
+
+* Unused EKS clusters
+* Unused EC2 instances
+* Unattached EBS volumes
+* Old snapshots
+* Oversized instances
+* CloudWatch logs
+* Load Balancers
+* NAT Gateway
+* Data transfer
+* Spot Instances
+
+### Important
+
+`EBS Volume = Available` generally means volume unattached hai. Delete karne se pehle verify ownership and backup requirement.
+
+---
+
+## 7. DevOps Cost Responsibility
+
+DevOps engineer ka role sirf deployment nahi hai.
+
+```text
+Security
++
+Reliability
++
+Performance
++
+Scalability
++
+Cost Optimization
+```
+
+A good DevOps engineer infrastructure ko **reliable + scalable + secure + cost-efficient** banata hai.
+
+---
+
+## 8. Quick Interview Revision
+
+```text
+Authentication → Who are you?
+Authorization  → What can you do?
+
+HPA → More/Less Pods
+VPA → More/Less CPU/RAM
+
+DaemonSet → Pod on every eligible node
+
+Node Group → Group of worker nodes
+
+Spot → Cheap but interruptible
+
+ETCD → Cluster state
+Scheduler → Selects node
+Kubelet → Manages Pods on node
+CNI → Pod networking
+```
+
+### Golden Interview Line
+
+> **EKS management mainly focuses on security, version upgrades, scaling, node management, high availability and continuous cost optimization.**
