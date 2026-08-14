@@ -1,296 +1,121 @@
-## Linux Fundamentals and DevOps Career Briefing
----
+## Overview
 
-# 1. Linux Navigation
+In this session, I learned the core AWS security, vulnerability management, database, infrastructure management, and messaging services used to build secure and resilient cloud environments. The focus was on defensive security layers, vulnerability assessment, database architecture, systems management, event-driven communication, and production-ready application architecture.
 
-## Print Current Directory
+## Topics Covered
 
-```bash
-pwd
-```
+### 1. AWS Shield
 
-Displays the current working directory.
+- Provides protection against Distributed Denial of Service (DDoS) attacks.
+- AWS Shield Standard provides automatic protection for AWS customers.
+- AWS Shield Advanced provides enhanced DDoS protection and additional support capabilities.
+- Protects services such as Route 53, CloudFront, and Elastic Load Balancing.
 
----
+### 2. AWS WAF
 
-## Change Directory
+- Web Application Firewall used to filter and control malicious web traffic.
+- Helps protect web applications against common attacks.
+- Provides protection against threats such as:
+  - SQL Injection
+  - Cross-Site Scripting (XSS)
+- Supports customizable rules for controlling incoming traffic.
 
-```bash
-cd folder_name
-```
+### 3. AWS GuardDuty
 
-Move into a directory.
+- Intelligent threat detection service.
+- Continuously monitors AWS environments for suspicious activity.
+- Uses threat intelligence and machine learning to identify potential threats.
+- Primarily provides detection and alerts rather than directly blocking attacks.
 
-```bash
-cd ..
-```
+### 4. AWS Inspector
 
-Move one level back.
+- Automated vulnerability management service.
+- Scans workloads for security vulnerabilities and deviations from security best practices.
+- Can assess:
+  - EC2 instances
+  - Container images
+  - Lambda functions
 
-```bash
-cd ../..
-```
+### 5. AWS Macie
 
-Move two levels back.
+- Data security and privacy service.
+- Uses machine learning to discover sensitive data stored in Amazon S3.
+- Helps identify sensitive information such as Personally Identifiable Information (PII) and financial data.
 
----
+### 6. AWS Config
 
-## List Directory Contents
+- Tracks AWS resource configurations and configuration changes.
+- Evaluates resources against desired configuration and compliance rules.
+- Helps with auditing, compliance, and configuration management.
 
-```bash
-ls
-```
+### 7. CVE & CVSS
 
-```bash
-ls -l
-```
+#### CVE
 
-Long listing.
+- Common Vulnerabilities and Exposures.
+- Provides standardized identifiers for publicly known vulnerabilities.
+- Example: `CVE-2024-XXXX`
 
-```bash
-ls -la
-```
+#### CVSS
 
-Shows hidden files.
+- Common Vulnerability Scoring System.
+- Provides a severity score from 0 to 10.
+- Helps security teams prioritize vulnerabilities.
 
-```bash
-ls -lh
-```
+### Vulnerability Prioritization
 
-Human-readable file sizes.
+- Prioritize vulnerabilities based on CVSS severity and business impact.
+- Customer-facing and business-critical assets should receive higher priority when severity is comparable.
 
----
+## Database Architecture
 
-# 2. File and Directory Management
+### 8. Relational Databases
 
-## Create Directory
+- Use structured schemas with tables, rows, and columns.
+- Support complex queries, joins, and transactions.
+- Common AWS services:
+  - Amazon RDS
+  - Amazon Aurora
+- Typically scale vertically by increasing resources of the database instance.
 
-```bash
-mkdir project
-```
+### 9. Non-Relational Databases
 
----
+- Use flexible data models such as documents and key-value structures.
+- Designed for large-scale workloads and low-latency access.
+- Amazon DynamoDB is a key AWS NoSQL database service.
+- Commonly supports horizontal scaling.
 
-## Create File
+### 10. Amazon Aurora
 
-```bash
-touch file.txt
-```
+- High-performance relational database service.
+- Compatible with MySQL and PostgreSQL.
+- Provides features such as:
+  - Automated backups
+  - Highly available storage
+  - Self-healing storage capabilities
+  - Serverless options
 
----
+## Infrastructure Management
 
-## Copy File
+### 11. AWS Systems Manager
 
-```bash
-cp file1.txt file2.txt
-```
-
----
-
-## Move or Rename
-
-```bash
-mv old.txt new.txt
-```
-
----
-
-## Delete File
-
-```bash
-rm file.txt
-```
-
-Delete Directory
-
-```bash
-rm -r folder
-```
-
-> **Warning:** Files deleted from the Linux CLI are generally not sent to a Recycle Bin.
-
----
-
-# 3. Linux Permissions
-
-Linux permissions are assigned to:
-
-- Owner (User)
-- Group
-- Others
-
-## Permission Values
-
-| Permission | Symbol | Value |
-|------------|--------|------:|
-| Read | r | 4 |
-| Write | w | 2 |
-| Execute | x | 1 |
-
----
-
-## Common Permission Examples
-
-| Permission | Meaning |
-|------------|---------|
-| 777 | Full access to everyone |
-| 755 | Owner has full access; others can read and execute |
-| 644 | Owner can read/write; others can only read |
-| 600 | Only owner can read/write |
-
----
-
-## Change Permissions
-
-```bash
-chmod 755 script.sh
-```
-
----
-
-## Change Owner
-
-```bash
-chown ubuntu:ubuntu file.txt
-```
-
----
-
-# 4. Hard Link vs Soft Link
-
-## Hard Link
-
-```bash
-ln source.txt hardlink.txt
-```
-
-### Features
-
-- Points directly to file data.
-- Continues to work even if the original filename is deleted.
-- Shares the same inode.
-
----
-
-## Soft Link (Symbolic Link)
-
-```bash
-ln -s source.txt softlink.txt
-```
-
-### Features
-
-- Works like a shortcut.
-- Depends on the original file path.
-- Becomes broken if the original file is removed.
-
----
-
-# 5. AWS EC2 Linux Practice
-
-## Connect to EC2
-
-```bash
-ssh -i key.pem ec2-user@<public-ip>
-```
-
-Requirements:
-
-- EC2 instance running
-- SSH key available
-- Security Group allows Port **22**
-- Public IP or Bastion Host
-
----
-
-# 6. Useful Linux Commands
-
-## Current User
-
-```bash
-whoami
-```
-
----
-
-## Current Date
-
-```bash
-date
-```
-
----
-
-## Disk Usage
-
-```bash
-df -h
-```
-
----
-
-## View File
-
-```bash
-cat file.txt
-```
-
----
-
-## First 10 Lines
-
-```bash
-head file.txt
-```
-
----
-
-## Last 10 Lines
-
-```bash
-tail file.txt
-```
-
----
-
-## Edit File
-
-```bash
-vim file.txt
-```
-
-### Vim Shortcuts
-
-Insert Mode
-
-```
-i
-```
-
-Save and Exit
-
-```
-Esc
-:wq
-```
-
-Quit Without Saving
-
-```
-Esc
-:q!
-```
-
-
-# Key Commands Summary
-
-| Category | Commands |
-|----------|----------|
-| Navigation | `pwd`, `cd`, `ls` |
-| File Management | `mkdir`, `touch`, `cp`, `mv`, `rm` |
-| Permissions | `chmod`, `chown` |
-| Viewing Files | `cat`, `head`, `tail` |
-| Editing | `vim` |
-| System Information | `whoami`, `date`, `df -h` |
-| Links | `ln`, `ln -s` |
-| AWS | `ssh` |
+- Centralized service for managing AWS infrastructure.
+- Supports automated patching and configuration management.
+- Provides remote EC2 management using Session Manager.
+- Helps track resource compliance.
+- Reduces dependency on traditional SSH-based server access.
+
+## Messaging & Event-Driven Services
+
+### 12. Amazon EventBridge
+
+- Serverless event bus.
+- Routes events from different sources to configured targets.
+- Useful for event-driven application architectures.
+
+```text
+Event Source
+     ↓
+EventBridge
+     ↓
+Target
