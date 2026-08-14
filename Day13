@@ -1,0 +1,363 @@
+# EKS Cluster Setup & Kubernetes Networking
+
+## 1. EKS Cluster Setup
+
+EKS cluster create karte time mainly ye cheezein decide karte hain:
+
+* Kubernetes version
+* Region
+* VPC/Subnets
+* Node Groups
+* Instance types
+* On-Demand / Spot capacity
+* IAM roles
+* Add-ons
+
+> **Note:** Kubernetes/EKS version aur pricing frequently change hoti hai, isliye exact support status AWS documentation se verify karna chahiye.
+
+---
+
+## 2. Terraform
+
+Terraform se EKS ke supporting infrastructure ko automate kar sakte hain.
+
+Example:
+
+```text
+Terraform
+   ↓
+VPC
+Subnets
+IAM
+Security Groups
+EC2 / Bastion
+EKS Resources
+```
+
+Jump/Bastion server ke liye small EC2 instance use kiya ja sakta hai.
+
+---
+
+## 3. EKS Access
+
+### Local Machine
+
+```text
+Laptop
+  ↓
+AWS Authentication
+  ↓
+EKS API Server
+```
+
+### Bastion / Jump Server
+
+```text
+Admin
+  ↓
+Bastion Server
+  ↓
+EKS API Server
+```
+
+Bastion centralized access aur security controls ke liye useful ho sakta hai.
+
+> Production mein direct internet exposure ke bajay private access/VPN/SSM jaise controlled access patterns prefer kiye ja sakte hain.
+
+---
+
+## 4. AWS CLI & Kubeconfig
+
+AWS credentials configure:
+
+```bash
+aws configure
+```
+
+EKS kubeconfig generate/update:
+
+```bash
+aws eks update-kubeconfig \
+  --region <region> \
+  --name <cluster-name>
+```
+
+Then:
+
+```bash
+kubectl get nodes
+```
+
+Kubeconfig mein cluster endpoint, CA information aur authentication configuration hoti hai.
+
+---
+
+# 5. Kubernetes Service Types
+
+## ClusterIP
+
+Default Service type.
+
+```text
+Pod → Service → Pod
+```
+
+Internal cluster communication ke liye.
+
+---
+
+## NodePort
+
+Node ke specific port par Service expose karta hai.
+
+```text
+Client
+  ↓
+NodeIP:NodePort
+  ↓
+Service
+  ↓
+Pods
+```
+
+Mostly testing/simple use cases ke liye.
+
+---
+
+## LoadBalancer
+
+Cloud provider ke through external Load Balancer provision kar sakta hai.
+
+```text
+Internet
+   ↓
+AWS Load Balancer
+   ↓
+Service
+   ↓
+Pods
+```
+
+---
+
+## ExternalName
+
+Service ko external DNS name se map karta hai.
+
+Example:
+
+```text
+Application
+    ↓
+ExternalName Service
+    ↓
+External Database
+```
+
+---
+
+# 6. ALB vs NLB
+
+| Feature        | ALB              | NLB                      |
+| -------------- | ---------------- | ------------------------ |
+| Layer          | L7               | L4                       |
+| Main Protocols | HTTP/HTTPS       | TCP/UDP/TLS              |
+| Routing        | Host/Path based  | IP/Port based            |
+| Use Case       | Web applications | High-performance TCP/UDP |
+
+### ALB Example
+
+```text
+example.com/api
+       ↓
+Backend Service
+
+example.com/frontend
+       ↓
+Frontend Service
+```
+
+### NLB
+
+Low-latency, high-throughput Layer-4 workloads ke liye useful.
+
+---
+
+# 7. Ingress
+
+**Ingress Service type nahi hai.**
+
+Ingress ek Kubernetes API resource hai jo external HTTP/HTTPS traffic ko Services tak route karta hai.
+
+Example:
+
+```text
+Internet
+   ↓
+Load Balancer
+   ↓
+Ingress
+   ├── /api → Backend Service
+   └── /web → Frontend Service
+```
+
+Ingress commonly provide karta hai:
+
+* Path-based routing
+* Host-based routing
+* TLS termination
+
+Ingress ko actual traffic handle karne ke liye **Ingress Controller** chahiye.
+
+---
+
+# 8. Namespaces
+
+Namespace cluster ke andar logical separation provide karta hai.
+
+Common namespaces:
+
+```text
+default
+kube-system
+kube-public
+kube-node-lease
+```
+
+Example:
+
+```text
+Cluster
+ ├── dev
+ ├── qa
+ ├── staging
+ └── prod
+```
+
+Useful for:
+
+* Team separation
+* Resource organization
+* RBAC
+* ResourceQuota
+
+`kubens` namespace switch karne ke liye convenient CLI tool hai.
+
+---
+
+# 9. Workload Controllers
+
+### Deployment
+
+Stateless applications ke liye.
+
+```text
+Deployment
+    ↓
+ReplicaSet
+    ↓
+Pods
+```
+
+### StatefulSet
+
+Stateful applications ke liye.
+
+Features:
+
+* Stable Pod identity
+* Stable network identity
+* Ordered deployment/scaling
+
+Example:
+
+```text
+db-0
+db-1
+db-2
+```
+
+### DaemonSet
+
+Selected/every eligible node par Pod run karta hai.
+
+Common use:
+
+* Monitoring
+* Logging
+* Networking agents
+
+### Job
+
+Finite task ko completion tak run karta hai.
+
+```text
+Job → Pod → Complete
+```
+
+### CronJob
+
+Scheduled Jobs run karta hai.
+
+```text
+CronJob
+   ↓
+Job
+   ↓
+Pod
+```
+
+---
+
+# 10. Quick Interview Revision
+
+```text
+EKS
+→ Managed Kubernetes service by AWS
+
+Terraform
+→ Infrastructure automation
+
+ClusterIP
+→ Internal Service
+
+NodePort
+→ Node IP + Port
+
+LoadBalancer
+→ External Load Balancer
+
+ExternalName
+→ External DNS mapping
+
+ALB
+→ L7, HTTP/HTTPS, Host/Path routing
+
+NLB
+→ L4, TCP/UDP/TLS, High performance
+
+Ingress
+→ HTTP/HTTPS routing API resource
+
+Namespace
+→ Logical isolation
+
+Deployment
+→ Stateless workloads
+
+StatefulSet
+→ Stateful workloads
+
+DaemonSet
+→ Pod on every eligible node
+
+Job
+→ One-time finite task
+
+CronJob
+→ Scheduled task
+```
+
+### Golden Interview Line
+
+> **In EKS, I focus on secure cluster access, proper node-group design, controlled networking through Services and Ingress, workload-specific controllers, version upgrades, and continuous cost optimization.**
