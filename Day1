@@ -1,43 +1,121 @@
 ## Overview
 
-In this session, I learned advanced AWS data and analytics services, cloud migration strategies, storage and data transfer solutions, CI/CD deployment methodologies, application tracing, and security scanning tools. The session also covered real-world DevOps practices and effective communication during technical interviews.
+In this session, I learned the core AWS security, vulnerability management, database, infrastructure management, and messaging services used to build secure and resilient cloud environments. The focus was on defensive security layers, vulnerability assessment, database architecture, systems management, event-driven communication, and production-ready application architecture.
 
 ## Topics Covered
 
-### 1. Amazon DynamoDB
+### 1. AWS Shield
 
-- Fully managed NoSQL database service.
-- Uses key-value and document-based data models.
-- Supports Partition Keys and Sort Keys.
-- Provides scalable and low-latency data access.
-- Can be provisioned and managed using Terraform.
+- Provides protection against Distributed Denial of Service (DDoS) attacks.
+- AWS Shield Standard provides automatic protection for AWS customers.
+- AWS Shield Advanced provides enhanced DDoS protection and additional support capabilities.
+- Protects services such as Route 53, CloudFront, and Elastic Load Balancing.
 
-### 2. Amazon Redshift
+### 2. AWS WAF
 
-- Managed cloud data warehouse service.
-- Designed for analytics and complex SQL queries.
-- Uses columnar storage for analytical workloads.
-- Supports parallel query processing for large datasets.
+- Web Application Firewall used to filter and control malicious web traffic.
+- Helps protect web applications against common attacks.
+- Provides protection against threats such as:
+  - SQL Injection
+  - Cross-Site Scripting (XSS)
+- Supports customizable rules for controlling incoming traffic.
 
-### 3. Amazon EMR
+### 3. AWS GuardDuty
 
-- Managed big data platform.
-- Supports open-source frameworks such as:
-  - Apache Spark
-  - Apache Hive
-  - Apache HBase
-- Used for large-scale data processing and analytics.
+- Intelligent threat detection service.
+- Continuously monitors AWS environments for suspicious activity.
+- Uses threat intelligence and machine learning to identify potential threats.
+- Primarily provides detection and alerts rather than directly blocking attacks.
 
-### 4. AWS Glue
+### 4. AWS Inspector
 
-- Serverless ETL service.
-- Used to prepare and transform data for analytics.
+- Automated vulnerability management service.
+- Scans workloads for security vulnerabilities and deviations from security best practices.
+- Can assess:
+  - EC2 instances
+  - Container images
+  - Lambda functions
 
-#### ETL Process
+### 5. AWS Macie
+
+- Data security and privacy service.
+- Uses machine learning to discover sensitive data stored in Amazon S3.
+- Helps identify sensitive information such as Personally Identifiable Information (PII) and financial data.
+
+### 6. AWS Config
+
+- Tracks AWS resource configurations and configuration changes.
+- Evaluates resources against desired configuration and compliance rules.
+- Helps with auditing, compliance, and configuration management.
+
+### 7. CVE & CVSS
+
+#### CVE
+
+- Common Vulnerabilities and Exposures.
+- Provides standardized identifiers for publicly known vulnerabilities.
+- Example: `CVE-2024-XXXX`
+
+#### CVSS
+
+- Common Vulnerability Scoring System.
+- Provides a severity score from 0 to 10.
+- Helps security teams prioritize vulnerabilities.
+
+### Vulnerability Prioritization
+
+- Prioritize vulnerabilities based on CVSS severity and business impact.
+- Customer-facing and business-critical assets should receive higher priority when severity is comparable.
+
+## Database Architecture
+
+### 8. Relational Databases
+
+- Use structured schemas with tables, rows, and columns.
+- Support complex queries, joins, and transactions.
+- Common AWS services:
+  - Amazon RDS
+  - Amazon Aurora
+- Typically scale vertically by increasing resources of the database instance.
+
+### 9. Non-Relational Databases
+
+- Use flexible data models such as documents and key-value structures.
+- Designed for large-scale workloads and low-latency access.
+- Amazon DynamoDB is a key AWS NoSQL database service.
+- Commonly supports horizontal scaling.
+
+### 10. Amazon Aurora
+
+- High-performance relational database service.
+- Compatible with MySQL and PostgreSQL.
+- Provides features such as:
+  - Automated backups
+  - Highly available storage
+  - Self-healing storage capabilities
+  - Serverless options
+
+## Infrastructure Management
+
+### 11. AWS Systems Manager
+
+- Centralized service for managing AWS infrastructure.
+- Supports automated patching and configuration management.
+- Provides remote EC2 management using Session Manager.
+- Helps track resource compliance.
+- Reduces dependency on traditional SSH-based server access.
+
+## Messaging & Event-Driven Services
+
+### 12. Amazon EventBridge
+
+- Serverless event bus.
+- Routes events from different sources to configured targets.
+- Useful for event-driven application architectures.
 
 ```text
-Extract
-   ↓
-Transform
-   ↓
-Load
+Event Source
+     ↓
+EventBridge
+     ↓
+Target
