@@ -1,0 +1,363 @@
+day 14
+
+# Kubernetes Tools, Troubleshooting & Scheduling
+
+## 1. Infrastructure & Tools
+
+### Terraform
+
+Production mein EKS infrastructure provision karne ke liye **Terraform** preferred hai.
+
+```text
+Terraform
+ ↓
+VPC + IAM + EKS + Node Groups
+```
+
+### Bastion / Jump Server
+
+Cluster access ke liye dedicated EC2 server use kiya ja sakta hai.
+
+Common tools:
+
+```text
+AWS CLI
+kubectl
+kubectx
+kubens
+```
+
+### AWS Systems Manager
+
+**Parameter Store**
+→ Configuration/secrets store karne ke liye.
+
+**Session Manager**
+→ EC2 access without opening SSH port or managing SSH keys.
+
+---
+
+## 2. kubectx / kubens
+
+```bash
+alias k=kubectl
+```
+
+* `kubectx` → Kubernetes cluster/context switch
+* `kubens` → Namespace switch
+
+Example:
+
+```bash
+kubectx prod
+kubens monitoring
+```
+
+---
+
+# 3. EBS CSI Driver Troubleshooting
+
+Common symptom:
+
+```text
+Pod → CrashLoopBackOff
+```
+
+Troubleshooting:
+
+```bash
+kubectl get pods
+kubectl describe pod <pod>
+kubectl logs <pod>
+```
+
+Sabse important:
+
+> **`kubectl describe` ke Events section ko check karo.**
+
+Example issue:
+
+```text
+No EC2 IAM role found
+Connection refused
+```
+
+Possible root cause:
+
+```text
+EBS CSI Driver
+      ↓
+Missing IAM Permissions
+      ↓
+Cannot call EC2 APIs
+      ↓
+Volume provisioning fails
+```
+
+Solution:
+
+* Correct IAM permissions
+* **EKS Pod Identity** or **IRSA**
+* EBS CSI Driver configuration verify karo
+
+---
+
+# 4. ImagePullPolicy
+
+| Policy         | Meaning                                    |
+| -------------- | ------------------------------------------ |
+| `Always`       | Every container start par image pull/check |
+| `IfNotPresent` | Local image available ho to use karega     |
+| `Never`        | Sirf local image use karega                |
+
+Example:
+
+```yaml
+imagePullPolicy: IfNotPresent
+```
+
+---
+
+# 5. Pod Scheduling
+
+## Pod Affinity
+
+Pods ko **same/nearby location** par place karne ke liye.
+
+```text
+Pod A
+  +
+Pod B
+  ↓
+Same Node / Topology
+```
+
+## Pod Anti-Affinity
+
+Pods ko different nodes par spread karne ke liye.
+
+```text
+Node-1 → Pod A
+Node-2 → Pod B
+Node-3 → Pod C
+```
+
+Purpose: **High Availability**
+
+## Node Affinity
+
+Pod ko specific type ke node par schedule karna.
+
+Example:
+
+```text
+GPU Pod
+ ↓
+GPU Node
+```
+
+---
+
+# 6. Taints & Tolerations
+
+### Taint
+
+Node par lagta hai aur unwanted Pods ko repel karta hai.
+
+```text
+Node
+ ↓
+Taint
+ ↓
+No normal Pod
+```
+
+### Toleration
+
+Pod ko tainted node par schedule hone ki permission deta hai.
+
+```text
+Tainted Node
+      +
+Pod Toleration
+      ↓
+Pod can run
+```
+
+Example use case:
+
+```text
+GPU Node
+ ↓
+GPU workload only
+```
+
+---
+
+# 7. Cordon vs Drain
+
+### Cordon
+
+Node ko **unschedulable** mark karta hai.
+
+```bash
+kubectl cordon <node>
+```
+
+New Pods schedule nahi honge.
+
+Existing Pods running reh sakte hain.
+
+### Drain
+
+Node ke workloads ko gracefully evict karta hai.
+
+```bash
+kubectl drain <node>
+```
+
+Maintenance ke liye commonly use hota hai.
+
+```text
+Cordon → New Pods stop
+Drain  → Existing Pods remove/evict
+```
+
+---
+
+# 8. Pod Disruption Budget (PDB)
+
+PDB voluntary disruptions ke time minimum availability maintain karne mein help karta hai.
+
+Example:
+
+```yaml
+minAvailable: 2
+```
+
+Matlab at least 2 Pods available rehne chahiye during allowed voluntary disruption.
+
+Or:
+
+```yaml
+maxUnavailable: 1
+```
+
+Maximum 1 Pod unavailable ho sakta hai.
+
+Useful during:
+
+* Node drain
+* Cluster maintenance
+* Node upgrades
+
+---
+
+# 9. Deployment Rolling Update
+
+Two important settings:
+
+### maxSurge
+
+Update ke time kitne **extra Pods** temporarily create ho sakte hain.
+
+```text
+replicas = 4
+maxSurge = 25%
+```
+
+→ Extra Pods allowed during rollout.
+
+### maxUnavailable
+
+Update ke time maximum kitne Pods unavailable ho sakte hain.
+
+```text
+maxUnavailable = 1
+```
+
+→ Maximum 1 Pod unavailable.
+
+---
+
+# 10. Professional Troubleshooting Approach
+
+Production mein har baar worker node ka SSH access available nahi hota.
+
+Isliye `kubectl` based troubleshooting strong honi chahiye:
+
+```text
+Problem
+ ↓
+kubectl get
+ ↓
+kubectl describe
+ ↓
+kubectl logs
+ ↓
+Events
+ ↓
+Service / Endpoints
+ ↓
+DNS / Network
+ ↓
+IAM / Permissions
+ ↓
+Application
+```
+
+Agar issue Networking/DB team ke scope mein ho:
+
+```text
+Specific Error
++
+Logs
++
+Required Fix
+```
+
+team ko provide karo.
+
+---
+
+# 11. AI in DevOps
+
+AI ko **replacement nahi, productivity tool** ki tarah use karo.
+
+Use AI for:
+
+* Log analysis
+* Error explanation
+* Command suggestions
+* YAML generation
+* Troubleshooting ideas
+
+But:
+
+> **AI-generated commands ko documentation aur environment ke according validate karo.**
+
+Best professional answer:
+
+> **"I don't know right now, but I can investigate and find the root cause."**
+
+---
+
+# 12. Golden Professional Mindset
+
+```text
+Memorization
+    ↓
+Understanding
+    ↓
+Troubleshooting
+    ↓
+Automation
+    ↓
+Problem Solving
+```
+
+Strong DevOps engineer ko har command yaad hona zaroori nahi hai.
+
+Important hai:
+
+> **Problem ko understand karo, correct tools use karo, root cause identify karo aur solution deliver karo.**
