@@ -1,0 +1,43 @@
+## Overview
+
+In this session, I learned advanced AWS data and analytics services, cloud migration strategies, storage and data transfer solutions, CI/CD deployment methodologies, application tracing, and security scanning tools. The session also covered real-world DevOps practices and effective communication during technical interviews.
+
+## Topics Covered
+
+### 1. Amazon DynamoDB
+
+- Fully managed NoSQL database service.
+- Uses key-value and document-based data models.
+- Supports Partition Keys and Sort Keys.
+- Provides scalable and low-latency data access.
+- Can be provisioned and managed using Terraform.
+
+### 2. Amazon Redshift
+
+- Managed cloud data warehouse service.
+- Designed for analytics and complex SQL queries.
+- Uses columnar storage for analytical workloads.
+- Supports parallel query processing for large datasets.
+
+### 3. Amazon EMR
+
+- Managed big data platform.
+- Supports open-source frameworks such as:
+  - Apache Spark
+  - Apache Hive
+  - Apache HBase
+- Used for large-scale data processing and analytics.
+
+### 4. AWS Glue
+
+- Serverless ETL service.
+- Used to prepare and transform data for analytics.
+
+#### ETL Process
+
+```text
+Extract
+   ↓
+Transform
+   ↓
+Load
