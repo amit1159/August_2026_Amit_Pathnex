@@ -1,0 +1,711 @@
+## 1. What is Kubernetes?
+
+**Kubernetes (K8s)** is an open-source container orchestration platform used to automate:
+
+* Deployment
+* Scaling
+* Networking
+* Self-healing
+* Load balancing
+* Container management
+
+### Why Kubernetes?
+
+Docker se manually containers manage karna small environment mein possible hai, but hundreds/thousands of containers ke liye difficult ho jata hai.
+
+Kubernetes automatically:
+
+```text
+Container/Pod Failure
+        ↓
+Detect Failure
+        ↓
+Create Replacement
+        ↓
+Maintain Desired State
+```
+
+---
+
+# 2. Desired State vs Actual State
+
+Kubernetes ka core concept hai:
+
+```text
+Desired State = Actual State
+```
+
+Example:
+
+```text
+Desired Replicas = 5
+Running Pods     = 4
+```
+
+Kubernetes automatically 5th Pod create karega.
+
+Isi mechanism ko **Reconciliation** kehte hain.
+
+---
+
+# 3. Kubernetes Architecture
+
+Kubernetes cluster mainly 2 parts mein divide hota hai:
+
+```text
+             Kubernetes Cluster
+                    |
+        +-----------+-----------+
+        |                       |
+   Control Plane            Worker Nodes
+     (Brain)                (Workload)
+```
+
+## Control Plane Components
+
+| Component                | Main Responsibility                         |
+| ------------------------ | ------------------------------------------- |
+| API Server               | Cluster ka central entry point              |
+| ETCD                     | Cluster state store karta hai               |
+| Scheduler                | Pod ke liye suitable node select karta hai  |
+| Controller Manager       | Desired aur actual state ko match karta hai |
+| Cloud Controller Manager | Cloud-specific resources manage karta hai   |
+
+---
+
+# 4. API Server
+
+**API Server Kubernetes ka central communication point hai.**
+
+`kubectl` commands API Server ko request bhejti hain.
+
+Example:
+
+```bash
+kubectl get pods
+```
+
+Flow:
+
+```text
+kubectl
+   ↓
+API Server
+   ↓
+Kubernetes State
+```
+
+API Server authentication, authorization, admission aur request validation bhi handle karta hai.
+
+---
+
+# 5. ETCD
+
+**ETCD** ek distributed key-value database hai jo Kubernetes cluster ka state store karta hai.
+
+Isme information hoti hai:
+
+* Pods
+* Nodes
+* Deployments
+* Services
+* ConfigMaps
+* Secrets
+* Cluster configuration
+
+ETCD ko Kubernetes ka **source of truth** kaha jata hai.
+
+Self-managed Kubernetes mein ETCD backup bahut important hai.
+
+---
+
+# 6. Scheduler
+
+Scheduler decide karta hai:
+
+> **Pod ko kis Worker Node par run karna hai?**
+
+Example:
+
+```text
+Pod
+ ↓
+Scheduler
+ ↓
+Worker-2
+```
+
+Scheduler consider kar sakta hai:
+
+* CPU/Memory availability
+* Node Selector
+* Affinity/Anti-affinity
+* Taints & Tolerations
+* Resource Requests
+* Topology constraints
+
+**Scheduler Pod ko run nahi karta; sirf suitable node select karta hai.**
+
+---
+
+# 7. Controller Manager
+
+Controller Manager continuously check karta hai:
+
+```text
+Desired State
+     vs
+Actual State
+```
+
+Example:
+
+```text
+Desired = 5 Pods
+Actual  = 4 Pods
+       ↓
+Controller
+       ↓
+New Pod
+```
+
+Ye Kubernetes ke self-healing mechanism ka important part hai.
+
+---
+
+# 8. Worker Node
+
+Worker Node par actual application workloads run hote hain.
+
+Main components:
+
+```text
+Worker Node
+ ├── Kubelet
+ ├── Kube-proxy
+ ├── Container Runtime
+ └── Pods
+```
+
+### Kubelet
+
+Kubelet worker node ka agent hai.
+
+Responsibilities:
+
+* Pod lifecycle manage karna
+* API Server se communicate karna
+* Container runtime ko instructions dena
+* Pod status report karna
+
+Flow:
+
+```text
+API Server
+    ↓
+Kubelet
+    ↓
+Container Runtime
+    ↓
+Container
+```
+
+### Kube-proxy
+
+Kube-proxy Kubernetes **Service networking** ke liye network rules/traffic forwarding implement karta hai.
+
+### Container Runtime
+
+Container runtime actual containers run karta hai.
+
+Common runtimes:
+
+* containerd
+* CRI-O
+
+Kubernetes ka **CRI (Container Runtime Interface)** runtime ke saath integration provide karta hai.
+
+---
+
+# 9. Pod
+
+**Pod Kubernetes ki smallest deployable unit hai.**
+
+Pod mein one or more containers ho sakte hain.
+
+```text
+Pod
+ ├── Application Container
+ └── Sidecar Container
+```
+
+Same Pod ke containers:
+
+* Same network namespace share karte hain
+* Same Pod IP use karte hain
+* Shared volumes use kar sakte hain
+
+Important interview point:
+
+> Kubernetes directly containers ko schedule nahi karta; Kubernetes Pods ko schedule karta hai.
+
+---
+
+# 10. Deployment Architecture
+
+Typical application structure:
+
+```text
+Deployment
+    ↓
+ReplicaSet
+    ↓
+Pod
+    ↓
+Container
+```
+
+Deployment provide karta hai:
+
+* Replica management
+* Rolling Updates
+* Rollbacks
+* Declarative deployment
+
+Example:
+
+```yaml
+spec:
+  replicas: 3
+```
+
+Matlab Kubernetes 3 replicas maintain karega.
+
+---
+
+# 11. Kubernetes Networking
+
+Kubernetes networking ke important concepts:
+
+* CNI
+* Service
+* CoreDNS
+* Ingress
+* NetworkPolicy
+
+### CNI
+
+CNI Pod networking provide karta hai.
+
+Examples:
+
+* Calico
+* Cilium
+* Flannel
+
+### Service
+
+Pod IP dynamic hota hai, isliye Service ek stable endpoint provide karta hai.
+
+```text
+Client
+  ↓
+Service
+  ↓
+Pod
+```
+
+Common Service types:
+
+```text
+ClusterIP
+NodePort
+LoadBalancer
+```
+
+### Ingress
+
+Ingress HTTP/HTTPS traffic ko Services tak route karta hai.
+
+```text
+Internet
+   ↓
+Ingress
+   ↓
+Service
+   ↓
+Pods
+```
+
+---
+
+# 12. Kubernetes Storage
+
+Persistent data ke liye Kubernetes use karta hai:
+
+```text
+StorageClass
+      ↓
+     PV
+      ↓
+     PVC
+      ↓
+     Pod
+```
+
+* **PV** → Persistent storage resource
+* **PVC** → Storage ki request
+* **StorageClass** → Dynamic provisioning
+
+Storage integration ke liye **CSI (Container Storage Interface)** use hota hai.
+
+---
+
+# 13. ConfigMap & Secret
+
+### ConfigMap
+
+Non-sensitive configuration store karta hai.
+
+Example:
+
+```text
+APP_ENV=production
+LOG_LEVEL=info
+```
+
+### Secret
+
+Sensitive information ke liye use hota hai:
+
+* Passwords
+* Tokens
+* API Keys
+* Certificates
+
+Secrets ko proper RBAC aur encryption-at-rest ke saath secure karna chahiye.
+
+---
+
+# 14. Kubernetes Self-Healing
+
+Agar Pod fail ho jaye:
+
+```text
+Pod Failure
+    ↓
+Controller detects mismatch
+    ↓
+Replacement Pod
+```
+
+Agar application unhealthy ho:
+
+* **Liveness Probe** → application ko restart karne mein help karti hai
+* **Readiness Probe** → traffic receive karna hai ya nahi decide karne mein help karti hai
+* **Startup Probe** → slow-starting applications ke liye useful
+
+---
+
+# 15. Scaling
+
+Kubernetes mein scaling ke multiple options hain:
+
+### Manual Scaling
+
+```bash
+kubectl scale deployment app --replicas=5
+```
+
+### HPA
+
+CPU/memory ya other supported metrics ke basis par Pods scale karta hai.
+
+```text
+High Load
+   ↓
+HPA
+   ↓
+More Pods
+```
+
+### Cluster Autoscaler
+
+Required capacity ke according worker nodes add/remove kar sakta hai.
+
+### KEDA
+
+Event-driven workloads ko scale kar sakta hai, jaise:
+
+* Redis
+* Kafka
+* RabbitMQ
+* Queue length
+
+---
+
+# 16. Kubernetes Monitoring
+
+Common monitoring stack:
+
+```text
+Prometheus
+     ↓
+Grafana
+     ↓
+Dashboards
+
+Alertmanager
+     ↓
+Alerts
+```
+
+Important components:
+
+* Prometheus → Metrics collection
+* Grafana → Visualization
+* Alertmanager → Alert handling
+* Node Exporter → Node metrics
+* kube-state-metrics → Kubernetes object/state metrics
+
+### Monitoring vs Observability
+
+> **Monitoring tells you what is happening.**
+
+> **Observability helps you understand why it is happening.**
+
+Observability ke main pillars:
+
+```text
+Metrics
+Logs
+Traces
+```
+
+---
+
+# 17. Kubernetes Command Flow
+
+Agar user command execute karta hai:
+
+```bash
+kubectl create deployment nginx --image=nginx
+```
+
+High-level flow:
+
+```text
+kubectl
+   ↓
+API Server
+   ↓
+ETCD
+   ↓
+Controller Manager
+   ↓
+Pod Created
+   ↓
+Scheduler
+   ↓
+Worker Node
+   ↓
+Kubelet
+   ↓
+Container Runtime
+   ↓
+Container
+```
+
+---
+
+# 18. What if Control Plane Fails?
+
+Agar Control Plane temporarily unavailable ho jaye:
+
+```text
+Control Plane ❌
+Workers       ✅
+```
+
+Existing Pods generally worker nodes par run karte reh sakte hain.
+
+Lekin cluster management affected hoga:
+
+* New workloads schedule nahi honge
+* Normal reconciliation affected hogi
+* New API operations fail ho sakte hain
+* Scaling/self-healing control-plane actions affected ho sakte hain
+
+Isliye production mein **HA Control Plane** important hai.
+
+Typical HA setup:
+
+```text
+        Load Balancer
+             |
+    +--------+--------+
+    |        |        |
+ Master-1 Master-2 Master-3
+    |        |        |
+    +--------+--------+
+             |
+       Worker Nodes
+```
+
+---
+
+# 19. Kubernetes Troubleshooting
+
+Basic troubleshooting flow:
+
+```text
+Problem
+   ↓
+kubectl get
+   ↓
+kubectl describe
+   ↓
+kubectl logs
+   ↓
+Check Events
+   ↓
+Check Service
+   ↓
+Check DNS
+   ↓
+Check Network
+   ↓
+Check Node
+   ↓
+Check Resources
+```
+
+Useful commands:
+
+```bash
+kubectl get pods
+kubectl describe pod <pod>
+kubectl logs <pod>
+kubectl logs <pod> --previous
+kubectl get events
+kubectl get nodes
+kubectl describe node <node>
+kubectl get svc
+kubectl get endpoints
+kubectl get deployment
+```
+
+Common issues:
+
+```text
+CrashLoopBackOff
+ImagePullBackOff
+ErrImagePull
+Pending
+OOMKilled
+ContainerCreating
+```
+
+---
+
+# 20. Kubernetes Backup & DR
+
+Self-managed Kubernetes:
+
+```text
+ETCD
+ ↓
+Snapshot
+ ↓
+Remote Backup Storage
+```
+
+Application resources aur persistent volumes ke liye **Velero** jaise tools use kiye ja sakte hain.
+
+Infrastructure ko reproducible banane ke liye:
+
+* Terraform
+* Ansible
+* Git
+* GitOps
+
+use kiye ja sakte hain.
+
+---
+
+# 21. Important Interview Questions
+
+### Architecture
+
+* What is Kubernetes?
+* Why do we need Kubernetes?
+* What is Control Plane?
+* What is Worker Node?
+* What is API Server?
+* What is ETCD?
+* What is Scheduler?
+* What is Controller Manager?
+* What is Kubelet?
+* What is Kube-proxy?
+* What is CRI?
+* What is CNI?
+* What is Pod?
+
+### Troubleshooting
+
+* Pod Pending ho to kya check karoge?
+* CrashLoopBackOff kaise troubleshoot karoge?
+* ImagePullBackOff kyun aata hai?
+* Service accessible nahi hai to kya check karoge?
+* Node NotReady ho to kya karoge?
+* Pod OOMKilled kyun hota hai?
+* DNS issue kaise troubleshoot karoge?
+
+### Production
+
+* ETCD backup kaise loge?
+* Kubernetes upgrade kaise karoge?
+* HA cluster kaise design karoge?
+* Kubernetes monitoring kaise karoge?
+* HPA kaise configure karoge?
+* Rolling update aur rollback kaise karoge?
+* Kubernetes cluster ka DR kaise plan karoge?
+
+---
+
+# 22. Kubernetes Interview Mental Model
+
+Kubernetes ko yaad rakhne ka easiest way:
+
+```text
+API SERVER
+→ Request receive karta hai
+
+ETCD
+→ Cluster state store karta hai
+
+CONTROLLER
+→ Desired state maintain karta hai
+
+SCHEDULER
+→ Pod ke liye node select karta hai
+
+KUBELET
+→ Node par Pod manage karta hai
+
+CONTAINER RUNTIME
+→ Container run karta hai
+
+KUBE-PROXY
+→ Service networking rules implement karta hai
+
+CNI
+→ Pod networking provide karta hai
+
+POD
+→ Smallest deployable unit
+```
+
+### One-line Interview Definition
+
+> **Kubernetes is a declarative container orchestration platform that continuously reconciles the actual state of the cluster with the desired state to provide automated deployment, scaling, networking and self-healing.**
