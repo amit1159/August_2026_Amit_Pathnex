@@ -1,0 +1,69 @@
+## Overview
+
+In this session, I learned the fundamentals of Docker and containerization, including container architecture, Docker images and containers, Dockerfiles, networking, persistent storage, image optimization, and container orchestration.
+
+The session focused on understanding how containers provide lightweight, portable, and isolated environments for deploying modern applications.
+
+## Topics Covered
+
+### 1. Docker & Containerization
+
+- Docker is a platform for packaging and running applications in lightweight containers.
+- Containers package application code, dependencies, libraries, and required system tools.
+- Provides consistency across development, testing, and production environments.
+- Containers are lightweight and portable compared to traditional virtual machines.
+
+### 2. Monolithic vs Microservices Architecture
+
+#### Monolithic Architecture
+
+- Application components are tightly coupled.
+- Multiple components are deployed as a single application.
+- Failure in a critical component can affect the entire application.
+- Scaling individual components can be difficult.
+
+#### Microservices Architecture
+
+- Application is divided into smaller, independent services.
+- Services can be developed, deployed, and scaled independently.
+- Failure of one service does not necessarily bring down the entire application.
+- Well suited for containerized environments.
+
+### 3. Virtual Machines vs Containers
+
+| Feature | Virtual Machines | Containers |
+|---|---|---|
+| OS | Each VM has a full OS | Share the host kernel |
+| Size | Usually GBs | Usually MBs |
+| Startup | Slower | Very fast |
+| Resource Usage | Higher | More efficient |
+| Isolation | Separate guest kernel | Shared host kernel |
+| Portability | Relatively lower | Highly portable |
+
+### 4. Container & Kernel Concept
+
+- Containers share the host operating system kernel.
+- This shared-kernel model makes containers lightweight.
+- Linux containers can run across different environments using appropriate container runtimes and virtualization layers where required.
+- Windows containers have different host and kernel compatibility requirements.
+
+## Docker Workflow
+
+### 5. Docker Application Lifecycle
+
+```text
+Source Code
+     ↓
+Dockerfile
+     ↓
+docker build
+     ↓
+Docker Image
+     ↓
+Docker Registry
+     ↓
+docker pull
+     ↓
+docker run
+     ↓
+Container
