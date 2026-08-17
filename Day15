@@ -1,0 +1,148 @@
+# Terraform + EKS — Quick Notes
+
+## Terraform
+
+* **Terraform** → Infrastructure as Code (IaC)
+* Used to automate EKS, VPC, IAM, Node Groups, etc.
+* Main commands:
+
+```bash
+terraform init
+terraform plan
+terraform apply
+terraform destroy
+```
+
+* **State Lock** → Prevents multiple users from modifying the same state simultaneously.
+* **depends_on** → Defines an explicit resource dependency.
+
+```text
+IAM / Pod Identity
+       ↓
+EBS CSI Driver
+```
+
+---
+
+## Three-Tier Application
+
+```text
+Frontend → Backend → Database
+ Nginx      API       MySQL/MongoDB
+```
+
+* Frontend → Deployment
+* Backend → Deployment
+* Database → StatefulSet + Persistent Storage
+
+---
+
+## Service Exposure
+
+```text
+ClusterIP     → Internal access
+NodePort      → Node IP + Port
+LoadBalancer  → External Load Balancer
+Ingress       → HTTP/HTTPS Routing
+```
+
+Ingress can provide:
+
+* Path-based routing
+* Host-based routing
+* TLS termination
+
+---
+
+## Health Probes
+
+### Liveness Probe
+
+Checks:
+
+> **Is the application alive?**
+
+If it repeatedly fails, Kubernetes can restart the container.
+
+### Readiness Probe
+
+Checks:
+
+> **Is the application ready to receive traffic?**
+
+If it fails, the Pod is removed from Service endpoints.
+
+---
+
+## Troubleshooting — 3 Important Commands
+
+```bash
+kubectl describe pod <pod>
+kubectl logs <pod>
+kubectl get events
+```
+
+### Troubleshooting Flow
+
+```text
+Problem
+   ↓
+Describe
+   ↓
+Logs
+   ↓
+Events
+   ↓
+Root Cause
+   ↓
+Fix
+   ↓
+Verify
+```
+
+---
+
+## EBS CSI Driver Issue
+
+```text
+EBS CSI Driver
+       ↓
+AWS API
+       ↓
+IAM Permissions
+       ↓
+EBS Volume
+```
+
+If there is an IAM issue, check:
+
+* EKS Pod Identity
+* IRSA
+* IAM permissions
+* EBS CSI configuration
+
+---
+
+## ImagePullBackOff
+
+**Meaning:** Kubernetes is unable to pull the container image.
+
+Common reasons:
+
+* Wrong image name
+* Wrong image tag
+* Private registry authentication issue
+* ECR permission issue
+* Registry/network connectivity issue
+
+Check:
+
+```bash
+kubectl describe pod <pod>
+```
+
+---
+
+## Golden Interview Line
+
+> **"My troubleshooting approach is to first collect evidence using describe, logs, and events, then identify the root cause, fix it, verify the application, and finally prevent the issue from happening again."**
